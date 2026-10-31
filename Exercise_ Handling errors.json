@@ -1,0 +1,124 @@
+{
+  "name": "Exercise: Handling errors",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "bf1c7c4c-3236-46c8-87ff-9337f343be42",
+      "name": "When clicking ‘Execute workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://httpstatuses.maor.io/500",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-assessment-id",
+              "value": "9ba4facf09b340ccbf10c1e9e41c7c20"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "44d42740-2893-4c79-b27d-fccdab41b048",
+      "name": "BadRequest",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -96,
+        -96
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "NtEix8YH2lz1jMNP",
+          "name": "X-API-KEY-25-Oct"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        240,
+        -208
+      ],
+      "id": "54975162-243e-48ae-bbb1-b27932f0fcc8",
+      "name": "Sucess"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        256,
+        0
+      ],
+      "id": "3bc7adb6-6257-4215-a72e-ff29f3616bcc",
+      "name": "HandleError"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "BadRequest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BadRequest": {
+      "main": [
+        [
+          {
+            "node": "Sucess",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HandleError",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "6ca61147-dd4f-4596-8a39-1e07e7b67049",
+  "meta": {
+    "instanceId": "c4a1ebf107c4c89d0f7573658c26d2ca73be88914904a8a05ae8ae24a53c0e29"
+  },
+  "nodeGroups": [],
+  "id": "UI40Lka3kYGL0ZLg",
+  "tags": []
+}

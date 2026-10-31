@@ -1,0 +1,164 @@
+{
+  "name": "Execution Logs Panel",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        -32
+      ],
+      "id": "c9a106f4-faf1-4861-8e64-db9e37bf83df",
+      "name": "Run for Logs"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ec5677a7-fc42-4897-957c-4a3243d51c65",
+              "name": "status",
+              "value": "ok",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        -32
+      ],
+      "id": "d6624946-2275-4d71-811b-f4af1498932b",
+      "name": "Input Data"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "5d70d3e5-f82a-4005-9f0f-ffae00888f47",
+              "leftValue": "={{$json.status}}",
+              "rightValue": "ok",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        224,
+        -32
+      ],
+      "id": "4947b58f-eaad-4b24-975f-ec3a81503609",
+      "name": "Check Status"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2f402e41-ddf6-4bb4-b1ea-65e8823f1c95",
+              "name": "message",
+              "value": "Workflow completed successfully",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        -128
+      ],
+      "id": "3d2c4afe-a870-4b86-b9f7-bdb6d8c47899",
+      "name": "Success Output"
+    },
+    {
+      "parameters": {
+        "jsCode": "throw new Error(\"Simulated failure for execution logs demo\");"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        64
+      ],
+      "id": "0e41f69e-8240-4dfd-beef-5dac9b8ed99d",
+      "name": "Force Error"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Run for Logs": {
+      "main": [
+        [
+          {
+            "node": "Input Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Input Data": {
+      "main": [
+        [
+          {
+            "node": "Check Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Status": {
+      "main": [
+        [
+          {
+            "node": "Success Output",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Force Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "d1745e02-1baa-4646-909c-f944d3cc423f",
+  "meta": {
+    "instanceId": "c4a1ebf107c4c89d0f7573658c26d2ca73be88914904a8a05ae8ae24a53c0e29"
+  },
+  "nodeGroups": [],
+  "id": "MGTGPRXMJu0qa2xa",
+  "tags": []
+}

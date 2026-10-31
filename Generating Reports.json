@@ -1,0 +1,153 @@
+{
+  "name": "Generating Reports",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "d8ee34b6-49ab-4c40-b485-b5022f63e869",
+      "name": "When clicking ‘Execute workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -352,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "TlszJkCAOoiwmy5c",
+          "mode": "list",
+          "cachedResultName": "customers",
+          "cachedResultUrl": "/projects/NPU9cKitSp8OYbqK/datatables/TlszJkCAOoiwmy5c"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": []
+        },
+        "returnAll": true
+      },
+      "id": "bc22a5e6-5ef6-4399-b063-692feb790dd7",
+      "name": "GetCustomers",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        -32,
+        128
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "advanced": true,
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "customerID",
+              "field2": "customerID"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fd27a066-4735-4a3a-a958-5a777219604f",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        208,
+        -48
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://learn.app.n8n.cloud/webhook/courses/n8n-quickstart/company-data",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-assessment-id",
+              "value": "9ba4facf09b340ccbf10c1e9e41c7c20"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c6e2b60f-fddb-4370-a556-dda77a33c505",
+      "name": "GetOrderData",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -48,
+        -112
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "NtEix8YH2lz1jMNP",
+          "name": "X-API-KEY-25-Oct"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "GetOrderData",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "GetCustomers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetCustomers": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        []
+      ]
+    },
+    "GetOrderData": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "1614bdce-ef20-4d83-a6d6-76d3f4ac11f9",
+  "meta": {
+    "instanceId": "c4a1ebf107c4c89d0f7573658c26d2ca73be88914904a8a05ae8ae24a53c0e29"
+  },
+  "nodeGroups": [],
+  "id": "LZ4plJOi9oprqidl",
+  "tags": []
+}

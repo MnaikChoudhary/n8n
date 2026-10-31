@@ -1,0 +1,102 @@
+{
+  "name": "Section 1 - Academy Registration",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6ec32a2d-dca7-4660-b09b-053bf96e4065",
+      "name": "TriggerManual"
+    },
+    {
+      "parameters": {
+        "url": "=https://learn.app.n8n.cloud/webhook/course/foundations/register",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "assessment_id",
+              "value": "9ba4facf09b340ccbf10c1e9e41c7c20"
+            },
+            {
+              "name": "workflow_name",
+              "value": "Section 1 - Academy Registration"
+            },
+            {
+              "name": "tag",
+              "value": "foundations-course"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        208,
+        0
+      ],
+      "id": "fc84380a-de33-4705-8c1d-8da87fab7142",
+      "name": "SubmitRegistration",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "K7STVfXb7vAwh6gO",
+          "name": "X-API-Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Academy Registration Workflow\nCreated by: Manik Choudhary \nDate: 19-Oct-2006                                             This workflow registers my n8n instance with the n8n Academy training system. It sends my assessment ID and workflow info to the Academy API.",
+        "width": 384
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        416,
+        32
+      ],
+      "typeVersion": 1,
+      "id": "834a7309-36be-404a-85cc-52cb363dace0",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "TriggerManual": {
+      "main": [
+        [
+          {
+            "node": "SubmitRegistration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "1037d015-6dec-4b4c-9b13-fb68e637f673",
+  "meta": {
+    "instanceId": "c4a1ebf107c4c89d0f7573658c26d2ca73be88914904a8a05ae8ae24a53c0e29"
+  },
+  "nodeGroups": [],
+  "id": "3fJ9ghgggPVBoBQw",
+  "tags": [
+    {
+      "updatedAt": "2026-10-19T05:16:47.401Z",
+      "createdAt": "2026-10-19T05:16:47.401Z",
+      "id": "3cZUqLEJhQeJ50Ak",
+      "name": "n8n101"
+    }
+  ]
+}

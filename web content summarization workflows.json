@@ -1,0 +1,129 @@
+{
+  "name": "web content summarization workflows",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "6a35d5b5-bafb-4c86-a2f1-725d09a9892e",
+      "name": "Run workflow",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -128,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ticket_text",
+              "name": "ticket_text",
+              "value": "Hi, I was charged twice for my subscription this month. Can you help?",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "78460752-f305-4b4f-8693-edc5e9bc3d72",
+      "name": "Support Ticket",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        96,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Classify the following support ticket into exactly one of these categories: billing, technical, general.\n\nRespond with only the category name, nothing else.\n\nTicket:\n{{ $json.ticket_text }}",
+        "batching": {}
+      },
+      "id": "4462c88a-3ae1-4323-9e26-7651106d965f",
+      "name": "Classify Ticket",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        320,
+        32
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-6",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 4.6"
+        },
+        "options": {}
+      },
+      "id": "d5b503b4-9d7b-4c06-9ee7-786071251c11",
+      "name": "Anthropic Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        320,
+        256
+      ],
+      "credentials": {
+        "anthropicApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Run workflow": {
+      "main": [
+        [
+          {
+            "node": "Support Ticket",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Support Ticket": {
+      "main": [
+        [
+          {
+            "node": "Classify Ticket",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Classify Ticket",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "63bbf378-d08c-4019-872a-f045bae1aa13",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c4a1ebf107c4c89d0f7573658c26d2ca73be88914904a8a05ae8ae24a53c0e29"
+  },
+  "nodeGroups": [],
+  "id": "0ZtYXxwugSeeHG7M",
+  "tags": []
+}

@@ -1,0 +1,303 @@
+{
+  "name": "Loops and multi-item processing",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -448,
+        32
+      ],
+      "id": "66591132-f144-40e9-bce4-06e09ade53f7",
+      "name": "ManualTrigger"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"products\": [\n    { \"item_name\": \"Laptop\", \"category\": \"electronics\", \"price\": 899 },\n    { \"item_name\": \"T-Shirt\", \"category\": \"clothing\", \"price\": 25 },\n    { \"item_name\": \"Headphones\", \"category\": \"Electronics\", \"price\": 150 },\n    { \"item_name\": \"Coffee Mug\", \"category\": \"homeware\", \"price\": 12 },\n    { \"item_name\": \"Monitor\", \"category\": \"electronics\", \"price\": 320 }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -224,
+        32
+      ],
+      "id": "b69b74cd-4a5d-47c8-9d6b-4113d1e730f2",
+      "name": "Mock Product Catalog"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "products",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        0,
+        32
+      ],
+      "id": "1678a8c6-f447-4a81-bcc2-0b7bad1b68b1",
+      "name": "Split Into Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f012",
+              "name": "final_price",
+              "type": "number",
+              "value": "={{ $json.price }}"
+            },
+            {
+              "id": "f013",
+              "name": "note",
+              "type": "string",
+              "value": "No discount for this category"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        -16
+      ],
+      "id": "7c4a538a-1365-4b84-92b8-89999ff528c2",
+      "name": "Keep Full Price"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f014",
+              "name": "batch_number",
+              "type": "number",
+              "value": "={{ $runIndex + 1 }}"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        368
+      ],
+      "id": "3631e5df-5e05-40f5-9385-672d0e672265",
+      "name": "Tag With Batch Number"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        448,
+        176
+      ],
+      "id": "d20d7294-d5e6-481f-afe4-66937bfd39a3",
+      "name": "All Batches Done"
+    },
+    {
+      "parameters": {
+        "content": "## Mock data\n\nOne Set node holds the whole test catalog as raw JSON. Split Out turns that single item into five items.\n\nEdit the JSON here to change your test data, or pin the output of Split Into Items and edit items directly in the output panel.",
+        "height": 260,
+        "width": 640,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -512,
+        -224
+      ],
+      "id": "ed2de592-e391-4431-8252-829993e4b7b4",
+      "name": "Sticky Mock Data"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c001",
+              "leftValue": "={{ $json.category }}",
+              "rightValue": "electronics",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        224,
+        -112
+      ],
+      "id": "28e675ac-fe40-4394-8c94-bfce9a2e7d7b",
+      "name": "Is Electronics?2"
+    },
+    {
+      "parameters": {
+        "batchSize": 2,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        224,
+        320
+      ],
+      "id": "f41ff44f-46a1-4002-8d25-fdb0fbbb700c",
+      "name": "Loop Over Items2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f010",
+              "name": "final_price",
+              "type": "number",
+              "value": "={{ Math.round($json.price * 0.9 * 100) / 100 }}"
+            },
+            {
+              "id": "f011",
+              "name": "note",
+              "type": "string",
+              "value": "10 percent electronics discount applied"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        -208
+      ],
+      "id": "d72d480d-0582-43b0-af29-f5bf265ea251",
+      "name": "Apply Discount2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "ManualTrigger": {
+      "main": [
+        [
+          {
+            "node": "Mock Product Catalog",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mock Product Catalog": {
+      "main": [
+        [
+          {
+            "node": "Split Into Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Into Items": {
+      "main": [
+        [
+          {
+            "node": "Is Electronics?2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tag With Batch Number": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Electronics?2": {
+      "main": [
+        [
+          {
+            "node": "Apply Discount2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Keep Full Price",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items2": {
+      "main": [
+        [
+          {
+            "node": "All Batches Done",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Tag With Batch Number",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "bc1bb149-803e-4501-a164-46ffba234d31",
+  "meta": {
+    "instanceId": "c4a1ebf107c4c89d0f7573658c26d2ca73be88914904a8a05ae8ae24a53c0e29"
+  },
+  "nodeGroups": [],
+  "id": "xWE5zjYI0Kc1yEqI",
+  "tags": []
+}

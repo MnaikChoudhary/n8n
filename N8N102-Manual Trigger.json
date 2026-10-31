@@ -1,0 +1,204 @@
+{
+  "name": "N8N102-Manual Trigger",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "d858ca37-049c-4433-a523-12ac1a208dc3",
+      "name": "TriggerManual",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        -240,
+        32
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "https://jsonplaceholder.typicode.com/users",
+        "options": {}
+      },
+      "id": "eb81db92-7275-40cd-bd43-69296c5b45df",
+      "name": "FetchSampleUsers",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -16,
+        32
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a1",
+              "name": "full_name",
+              "type": "string",
+              "value": "={{ $json.name }}"
+            },
+            {
+              "id": "a2",
+              "name": "email",
+              "type": "string",
+              "value": "={{ $json.email }}"
+            },
+            {
+              "id": "a3",
+              "name": "company",
+              "type": "string",
+              "value": "={{ $json.company.name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "19a548e2-9885-4b52-a0e1-c588d874f636",
+      "name": "ExtractKeyFields",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        208,
+        32
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              },
+              "leftValue": "={{ $json.email }}",
+              "rightValue": ".org"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "af422978-ebd4-4c76-ab9f-be4a8d0e6f42",
+      "name": "FilterOrgEmails",
+      "type": "n8n-nodes-base.filter",
+      "position": [
+        432,
+        32
+      ],
+      "typeVersion": 2.2
+    }
+  ],
+  "pinData": {
+    "FetchSampleUsers": [
+      {
+        "json": {
+          "id": 1,
+          "name": "Leanne Graham",
+          "username": "Bret",
+          "email": "Sincere@april.biz",
+          "company": {
+            "name": "Romaguera-Crona"
+          }
+        }
+      },
+      {
+        "json": {
+          "id": 2,
+          "name": "Ervin Howell",
+          "username": "Antonette",
+          "email": "Shanna@melissa.tv",
+          "company": {
+            "name": "Deckow-Crist"
+          }
+        }
+      },
+      {
+        "json": {
+          "id": 3,
+          "name": "Clementine Bauch",
+          "username": "Samantha",
+          "email": "Nathan@yesenia.net",
+          "company": {
+            "name": "Romaguera-Jacobson"
+          }
+        }
+      },
+      {
+        "json": {
+          "id": 4,
+          "name": "Patricia Lebsack",
+          "username": "Karianne",
+          "email": "Julianne.OConner@kory.org",
+          "company": {
+            "name": "Robel-Corkery"
+          }
+        }
+      },
+      {
+        "json": {
+          "id": 5,
+          "name": "Chelsey Dietrich",
+          "username": "Kamren",
+          "email": "Lucio_Hettinger@annie.ca",
+          "company": {
+            "name": "Keebler LLC"
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "TriggerManual": {
+      "main": [
+        [
+          {
+            "node": "FetchSampleUsers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FetchSampleUsers": {
+      "main": [
+        [
+          {
+            "node": "ExtractKeyFields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ExtractKeyFields": {
+      "main": [
+        [
+          {
+            "node": "FilterOrgEmails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "e26889f8-4a9e-4304-8dae-4e464a3d3993",
+  "meta": {
+    "instanceId": "c4a1ebf107c4c89d0f7573658c26d2ca73be88914904a8a05ae8ae24a53c0e29"
+  },
+  "nodeGroups": [],
+  "id": "sSfs8tpcGP59VmXO",
+  "tags": []
+}

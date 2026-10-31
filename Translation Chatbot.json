@@ -1,0 +1,97 @@
+{
+  "name": "Translation Chatbot",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "68ecc91c-7938-41f2-89a0-87bfb1a1107e",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -48,
+        -144
+      ],
+      "webhookId": "23c43aa2-3ed0-429a-a498-3647f522d4ef"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a German translation assistant. Your sole purpose is to translate any text provided by the user into German.\n\nRules:\n- Always respond with only the German translation of the provided text, nothing else.\n- Do not add explanations, commentary, greetings, or any extra text.\n- If the input is already in German, return it as-is without any changes or notes.\n- Preserve the original formatting, tone, and punctuation as closely as possible in the translation.\n- If the input contains untranslatable elements such as proper nouns, brand names, or code, keep them as-is within the translation."
+        }
+      },
+      "id": "3f4eb978-04b6-4608-85b8-1d7617c5ddac",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        160,
+        -144
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-6",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 4.6"
+        },
+        "options": {}
+      },
+      "id": "7c19f594-4560-45b5-b486-dc73db376e99",
+      "name": "Anthropic Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        160,
+        112
+      ],
+      "credentials": {
+        "anthropicApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "e468eae0-d2f2-49c1-98bf-3f21e230afc3",
+  "meta": {
+    "instanceId": "c4a1ebf107c4c89d0f7573658c26d2ca73be88914904a8a05ae8ae24a53c0e29"
+  },
+  "nodeGroups": [],
+  "id": "eVgd0lJhiKQdx1b5",
+  "tags": []
+}

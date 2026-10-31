@@ -1,0 +1,285 @@
+{
+  "name": "Switch Node",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "730f2c37-f809-4d58-b809-3cfacfd02f46",
+      "name": "TriggerManual",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        -240,
+        112
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "https://jsonplaceholder.typicode.com/posts",
+        "options": {}
+      },
+      "id": "fec5a571-3119-48b8-8cf7-d6fe4b93f1f4",
+      "name": "GetOrders",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -16,
+        112
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "r1",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "pending"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "Pending"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "r2",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "shipped"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "Shipped"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "r3",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "cancelled"
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "Cancelled"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "id": "1fbeaeb1-1cff-4658-a655-8990b189f742",
+      "name": "RouteByStatus",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        208,
+        80
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "1460ce23-ccf3-487a-9d97-053d632c626e",
+      "name": "ProcessPending",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        432,
+        -192
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "a5819084-9ea8-44bd-8029-163427f1d12a",
+      "name": "NotifyShipped",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        432,
+        16
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "20e431df-c9c8-47e8-9f7f-c48759806f15",
+      "name": "HandleCancelled",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        432,
+        208
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "b90766bd-4298-4923-9722-75fac0b79380",
+      "name": "HandleUnknownStatus",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        432,
+        400
+      ],
+      "typeVersion": 3.4
+    }
+  ],
+  "pinData": {
+    "GetOrders": [
+      {
+        "json": {
+          "order_id": "ORD-001",
+          "customer": "Acme Corp",
+          "total": 250,
+          "status": "pending"
+        }
+      },
+      {
+        "json": {
+          "order_id": "ORD-002",
+          "customer": "Globex Inc",
+          "total": 45,
+          "status": "shipped"
+        }
+      },
+      {
+        "json": {
+          "order_id": "ORD-003",
+          "customer": "Initech",
+          "total": 180,
+          "status": "cancelled"
+        }
+      },
+      {
+        "json": {
+          "order_id": "ORD-004",
+          "customer": "Umbrella Ltd",
+          "total": 320,
+          "status": "pending"
+        }
+      },
+      {
+        "json": {
+          "order_id": "ORD-005",
+          "customer": "Stark Industries",
+          "total": 75,
+          "status": "returned"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "TriggerManual": {
+      "main": [
+        [
+          {
+            "node": "GetOrders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetOrders": {
+      "main": [
+        [
+          {
+            "node": "RouteByStatus",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RouteByStatus": {
+      "main": [
+        [
+          {
+            "node": "ProcessPending",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "NotifyShipped",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HandleCancelled",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HandleUnknownStatus",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "d4f089cf-9f27-489a-a00c-cfb6e3a8ff91",
+  "meta": {
+    "instanceId": "c4a1ebf107c4c89d0f7573658c26d2ca73be88914904a8a05ae8ae24a53c0e29"
+  },
+  "nodeGroups": [],
+  "id": "6hJTf30sMya0RhJo",
+  "tags": []
+}

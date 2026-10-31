@@ -1,0 +1,197 @@
+{
+  "name": "API integrations and conditional logic",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        32
+      ],
+      "id": "a56879d6-d81a-4c69-9bca-971c4f0b9edc",
+      "name": "ManualTrigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f001",
+              "name": "status",
+              "type": "number",
+              "value": 200
+            },
+            {
+              "id": "f002",
+              "name": "order_total",
+              "type": "number",
+              "value": 75
+            },
+            {
+              "id": "f003",
+              "name": "customer_email",
+              "type": "string",
+              "value": "alice@example.com"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -16,
+        32
+      ],
+      "id": "4ee452a5-439e-44ad-818e-a90541555e96",
+      "name": "Mock API Response"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c001",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": 200,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        208,
+        32
+      ],
+      "id": "2cec0bb5-5cf0-4e87-9ba6-72186c07772d",
+      "name": "Check Status"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f004",
+              "name": "result",
+              "type": "string",
+              "value": "Order processed successfully"
+            },
+            {
+              "id": "f005",
+              "name": "notify_email",
+              "type": "string",
+              "value": "={{ $json.customer_email }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        -80
+      ],
+      "id": "92ac084e-9f14-4e51-9f4d-716503d28b36",
+      "name": "Handle Success"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f006",
+              "name": "result",
+              "type": "string",
+              "value": "API returned an error"
+            },
+            {
+              "id": "f007",
+              "name": "error_status",
+              "type": "number",
+              "value": "={{ $json.status }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        128
+      ],
+      "id": "63981b84-cc7d-4a7d-8861-82cab7b33c18",
+      "name": "Handle Failure"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "ManualTrigger": {
+      "main": [
+        [
+          {
+            "node": "Mock API Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mock API Response": {
+      "main": [
+        [
+          {
+            "node": "Check Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Status": {
+      "main": [
+        [
+          {
+            "node": "Handle Success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Handle Failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "e126465c-e5f7-44ad-97f1-6004f9bd3b0e",
+  "meta": {
+    "instanceId": "c4a1ebf107c4c89d0f7573658c26d2ca73be88914904a8a05ae8ae24a53c0e29"
+  },
+  "nodeGroups": [],
+  "id": "wQuIM96tmUqLVnFA",
+  "tags": []
+}

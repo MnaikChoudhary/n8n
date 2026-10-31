@@ -1,0 +1,62 @@
+{
+  "name": "Binary data",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://picsum.photos/400/300",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        96,
+        32
+      ],
+      "id": "73cc0acf-3650-4ace-970d-970045bf34a0",
+      "name": "Fetch Sample Image"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        32
+      ],
+      "id": "d0921666-81bf-46be-8989-5ff3937301e3",
+      "name": "When clicking Execute workflow"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking Execute workflow": {
+      "main": [
+        [
+          {
+            "node": "Fetch Sample Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "781cd051-aee4-4cfb-a54d-2d1e414c5312",
+  "meta": {
+    "instanceId": "c4a1ebf107c4c89d0f7573658c26d2ca73be88914904a8a05ae8ae24a53c0e29"
+  },
+  "nodeGroups": [],
+  "id": "0hJRRzOleT184idR",
+  "tags": []
+}

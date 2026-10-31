@@ -1,0 +1,313 @@
+{
+  "name": "Using Mock Data",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "3d43d4fd-8c32-4b80-bc8f-f3480b514570",
+      "name": "Run workflow",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "order_id_1",
+              "name": "order_id",
+              "value": "001",
+              "type": "string"
+            },
+            {
+              "id": "status_1",
+              "name": "status",
+              "value": "paid",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b06e22f6-4b52-45e8-ae2d-4c495657810b",
+      "name": "Mock order 1 - paid",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -16,
+        -128
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "order_id_2",
+              "name": "order_id",
+              "value": "002",
+              "type": "string"
+            },
+            {
+              "id": "status_2",
+              "name": "status",
+              "value": "pending",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "be1a6e40-f44c-4b62-b8e2-a75052ca239d",
+      "name": "Mock order 2 - pending",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -16,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "order_id_3",
+              "name": "order_id",
+              "value": "003",
+              "type": "string"
+            },
+            {
+              "id": "status_3",
+              "name": "status",
+              "value": "cancelled",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0a506e8a-ffc7-46ba-a7af-8b6fb9bd0999",
+      "name": "Mock order 3 - cancelled",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -16,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "paid",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "9402384a-f87b-487e-ba9a-4176000f39f2"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "pending",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "81ca730f-cff7-4443-9ae4-f4ad898a2ec4"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "cancelled",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "3c286eb1-01ef-4fb5-8a8b-560d530bed3c"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b11bc3fa-01a8-4994-9038-8adf91e25b37",
+      "name": "Route by status",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        64
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "41577ca1-22aa-4d23-a1bd-7a37abbf9c9e",
+      "name": "Send to fulfillment",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        432,
+        -128
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "722343e6-1713-4f9d-bbf6-b02aaeb21d2f",
+      "name": "Send reminder",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        432,
+        80
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "8bac098d-6934-4914-bbcb-0af3ad0d1d6f",
+      "name": "Log in CRM",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        432,
+        272
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Run workflow": {
+      "main": [
+        [
+          {
+            "node": "Mock order 1 - paid",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Mock order 2 - pending",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Mock order 3 - cancelled",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mock order 1 - paid": {
+      "main": [
+        [
+          {
+            "node": "Route by status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mock order 2 - pending": {
+      "main": [
+        [
+          {
+            "node": "Route by status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mock order 3 - cancelled": {
+      "main": [
+        [
+          {
+            "node": "Route by status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route by status": {
+      "main": [
+        [
+          {
+            "node": "Send to fulfillment",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send reminder",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log in CRM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "67e77d45-d2ad-4791-9661-78d2b820d938",
+  "meta": {
+    "instanceId": "c4a1ebf107c4c89d0f7573658c26d2ca73be88914904a8a05ae8ae24a53c0e29"
+  },
+  "nodeGroups": [],
+  "id": "hAEO5xyMCUdStOAC",
+  "tags": []
+}

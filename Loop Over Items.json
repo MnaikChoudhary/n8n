@@ -1,0 +1,191 @@
+{
+  "name": "Loop Over Items",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "5e1b6755-387a-4e49-a581-02443dbf5e7d",
+      "name": "TriggerManual",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        -240,
+        0
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "https://jsonplaceholder.typicode.com/posts",
+        "options": {}
+      },
+      "id": "bdb90459-7abc-4e06-8446-547b27c3ebda",
+      "name": "GetAllOrders",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -16,
+        0
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "batchSize": 3,
+        "options": {}
+      },
+      "id": "4fe61876-0c48-4e3e-8ed6-d86b480b8fe6",
+      "name": "BatchOrders",
+      "type": "n8n-nodes-base.splitInBatches",
+      "position": [
+        208,
+        0
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "url": "https://jsonplaceholder.typicode.com/posts",
+        "options": {}
+      },
+      "id": "6ab4da18-5394-4cb3-8eaa-85b666bd4464",
+      "name": "SendBatchToAPI",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        432,
+        48
+      ],
+      "typeVersion": 4.2
+    }
+  ],
+  "pinData": {
+    "GetAllOrders": [
+      {
+        "json": {
+          "order_id": "ORD-001",
+          "customer": "Acme Corp",
+          "total": 250
+        }
+      },
+      {
+        "json": {
+          "order_id": "ORD-002",
+          "customer": "Globex Inc",
+          "total": 45
+        }
+      },
+      {
+        "json": {
+          "order_id": "ORD-003",
+          "customer": "Initech",
+          "total": 180
+        }
+      },
+      {
+        "json": {
+          "order_id": "ORD-004",
+          "customer": "Umbrella Ltd",
+          "total": 320
+        }
+      },
+      {
+        "json": {
+          "order_id": "ORD-005",
+          "customer": "Stark Industries",
+          "total": 75
+        }
+      },
+      {
+        "json": {
+          "order_id": "ORD-006",
+          "customer": "Wayne Enterprises",
+          "total": 410
+        }
+      },
+      {
+        "json": {
+          "order_id": "ORD-007",
+          "customer": "Cyberdyne Systems",
+          "total": 95
+        }
+      },
+      {
+        "json": {
+          "order_id": "ORD-008",
+          "customer": "Wonka Industries",
+          "total": 150
+        }
+      },
+      {
+        "json": {
+          "order_id": "ORD-009",
+          "customer": "Soylent Corp",
+          "total": 60
+        }
+      },
+      {
+        "json": {
+          "order_id": "ORD-010",
+          "customer": "Massive Dynamic",
+          "total": 285
+        }
+      }
+    ]
+  },
+  "connections": {
+    "TriggerManual": {
+      "main": [
+        [
+          {
+            "node": "GetAllOrders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetAllOrders": {
+      "main": [
+        [
+          {
+            "node": "BatchOrders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BatchOrders": {
+      "main": [
+        [],
+        [
+          {
+            "node": "SendBatchToAPI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SendBatchToAPI": {
+      "main": [
+        [
+          {
+            "node": "BatchOrders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "976fe749-d204-4fd8-a911-4ff202f0037a",
+  "meta": {
+    "instanceId": "c4a1ebf107c4c89d0f7573658c26d2ca73be88914904a8a05ae8ae24a53c0e29"
+  },
+  "nodeGroups": [],
+  "id": "8gz8kHEhktRUf15C",
+  "tags": []
+}

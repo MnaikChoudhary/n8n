@@ -1,0 +1,159 @@
+{
+  "name": "Customer service agent",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -112,
+        -16
+      ],
+      "id": "21a223be-b68a-4f38-8e81-ba4ba4c45048",
+      "name": "When chat message received",
+      "webhookId": "d5415aed-2f73-4b01-bf9d-9c6510cd2f32"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a customer service agent for a small company. Be polite, concise, and helpful. If you do not know the answer, say so honestly rather than making something up."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        192,
+        -16
+      ],
+      "id": "3e4076c8-72af-4061-8c98-de655dfb5542",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "responsesApiEnabled": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        192,
+        224
+      ],
+      "id": "2dcfa598-eda8-45ea-bd6f-7bf8109667d8",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        288,
+        288
+      ],
+      "id": "0ad58c81-d7db-4ffa-9286-5eb93721b872",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "TlszJkCAOoiwmy5c",
+          "mode": "list",
+          "cachedResultName": "customers",
+          "cachedResultUrl": "/projects/NPU9cKitSp8OYbqK/datatables/TlszJkCAOoiwmy5c"
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1.1,
+      "position": [
+        416,
+        288
+      ],
+      "id": "99891faa-a9f1-4352-a3cd-3988830ba988",
+      "name": "GetCustomers"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetCustomers": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "c6c66810-a9e5-41fd-8e46-3cd6f69281f8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c4a1ebf107c4c89d0f7573658c26d2ca73be88914904a8a05ae8ae24a53c0e29"
+  },
+  "nodeGroups": [],
+  "id": "j8dQXb10YUZOPnqW",
+  "tags": [
+    {
+      "updatedAt": "2026-10-31T07:19:55.431Z",
+      "createdAt": "2026-10-31T07:19:55.431Z",
+      "id": "fVuJBfzfUKxGeHww",
+      "name": "n8n quickstar"
+    }
+  ]
+}

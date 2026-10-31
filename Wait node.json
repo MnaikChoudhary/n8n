@@ -1,0 +1,216 @@
+{
+  "name": "Wait node",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "d4965e74-3834-442e-b9ca-24e340b5dc77",
+      "name": "TriggerManual",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        -384,
+        -128
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "https://jsonplaceholder.typicode.com/posts",
+        "options": {}
+      },
+      "id": "3d96c586-6812-4633-9277-298f078a3392",
+      "name": "GetAllRecords",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -160,
+        -128
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "batchSize": 5,
+        "options": {}
+      },
+      "id": "c249409b-f00f-4a05-b94c-def804ae68d9",
+      "name": "BatchRecords",
+      "type": "n8n-nodes-base.splitInBatches",
+      "position": [
+        64,
+        -128
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "url": "https://jsonplaceholder.typicode.com/posts",
+        "options": {}
+      },
+      "id": "711c6e73-fadd-4579-af57-e41df6ea2108",
+      "name": "SendBatchToAPI",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        288,
+        -128
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "id": "4b39ce90-a988-4079-ace9-ae76e5885068",
+      "name": "WaitForRateLimit",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        512,
+        -48
+      ],
+      "webhookId": "wt-demo-wait",
+      "typeVersion": 1.1
+    }
+  ],
+  "pinData": {
+    "GetAllRecords": [
+      {
+        "json": {
+          "id": 1,
+          "title": "Record A",
+          "status": "active"
+        }
+      },
+      {
+        "json": {
+          "id": 2,
+          "title": "Record B",
+          "status": "active"
+        }
+      },
+      {
+        "json": {
+          "id": 3,
+          "title": "Record C",
+          "status": "active"
+        }
+      },
+      {
+        "json": {
+          "id": 4,
+          "title": "Record D",
+          "status": "active"
+        }
+      },
+      {
+        "json": {
+          "id": 5,
+          "title": "Record E",
+          "status": "active"
+        }
+      },
+      {
+        "json": {
+          "id": 6,
+          "title": "Record F",
+          "status": "active"
+        }
+      },
+      {
+        "json": {
+          "id": 7,
+          "title": "Record G",
+          "status": "active"
+        }
+      },
+      {
+        "json": {
+          "id": 8,
+          "title": "Record H",
+          "status": "active"
+        }
+      },
+      {
+        "json": {
+          "id": 9,
+          "title": "Record I",
+          "status": "active"
+        }
+      },
+      {
+        "json": {
+          "id": 10,
+          "title": "Record J",
+          "status": "active"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "TriggerManual": {
+      "main": [
+        [
+          {
+            "node": "GetAllRecords",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetAllRecords": {
+      "main": [
+        [
+          {
+            "node": "BatchRecords",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BatchRecords": {
+      "main": [
+        [],
+        [
+          {
+            "node": "SendBatchToAPI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SendBatchToAPI": {
+      "main": [
+        [
+          {
+            "node": "WaitForRateLimit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WaitForRateLimit": {
+      "main": [
+        [
+          {
+            "node": "BatchRecords",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "209a2edf-ecb2-493d-8f76-4528f7f26ec4",
+  "meta": {
+    "instanceId": "c4a1ebf107c4c89d0f7573658c26d2ca73be88914904a8a05ae8ae24a53c0e29"
+  },
+  "nodeGroups": [],
+  "id": "P2Vdm5qnRJ3cU9hX",
+  "tags": []
+}

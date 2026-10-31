@@ -1,0 +1,77 @@
+{
+  "name": "Creating Test Scenarios",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f001",
+              "name": "name",
+              "type": "string",
+              "value": "Alice Johnson"
+            },
+            {
+              "id": "f002",
+              "name": "email",
+              "type": "string",
+              "value": "alice@example.com"
+            },
+            {
+              "id": "f003",
+              "name": "order_total",
+              "type": "number",
+              "value": 75
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        32
+      ],
+      "id": "e7f4896d-0bbc-46c0-88c2-7be9c241d751",
+      "name": "Mock Order Data"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        32
+      ],
+      "id": "de17ca6b-285d-4389-abfc-1ef2e3694a37",
+      "name": "ManualTrigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "ManualTrigger": {
+      "main": [
+        [
+          {
+            "node": "Mock Order Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "74643261-3de0-4b0b-82f4-10456501d6d0",
+  "meta": {
+    "instanceId": "c4a1ebf107c4c89d0f7573658c26d2ca73be88914904a8a05ae8ae24a53c0e29"
+  },
+  "nodeGroups": [],
+  "id": "ZIThLAXIGl77YiwY",
+  "tags": []
+}

@@ -1,0 +1,219 @@
+{
+  "name": "IF node",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "45bbee2b-320d-4199-87bc-7f597f5e2c1d",
+      "name": "TriggerManual",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        -256,
+        16
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "https://jsonplaceholder.typicode.com/posts",
+        "options": {}
+      },
+      "id": "27dd8d00-36a9-4b10-9827-6655809cdcb1",
+      "name": "GetOrders",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -32,
+        16
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "c1",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              },
+              "leftValue": "={{ $json.total }}",
+              "rightValue": 100
+            },
+            {
+              "id": "c2",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              },
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "completed"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "49b72ddb-5543-46ae-a7f8-348a9b90ed5e",
+      "name": "CheckHighValueCompleted",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        192,
+        16
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "user",
+        "user": {
+          "__rl": true,
+          "value": "U0CAH84MJ1Y",
+          "mode": "list",
+          "cachedResultName": "manikchoudhary470 (@manikchoudhary470)"
+        },
+        "messageType": "attachment",
+        "attachments": [
+          {
+            "author_name": "Manik Choudhary"
+          },
+          {}
+        ],
+        "otherOptions": {}
+      },
+      "id": "1cf4bb35-11f0-4cd2-8701-6296f18add0b",
+      "name": "SendPriorityAlert",
+      "type": "n8n-nodes-base.slack",
+      "position": [
+        448,
+        -80
+      ],
+      "typeVersion": 2.2,
+      "webhookId": "a3f67439-8188-4aee-a646-aca291076173",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "X3PyzzFeOFsB5bdR",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "41d2c375-9eda-446b-ac85-1602890a4cba",
+      "name": "LogStandardOrder",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        448,
+        128
+      ],
+      "typeVersion": 3.4
+    }
+  ],
+  "pinData": {
+    "GetOrders": [
+      {
+        "json": {
+          "order_id": "ORD-001",
+          "customer": "Acme Corp",
+          "total": 250,
+          "status": "completed"
+        }
+      },
+      {
+        "json": {
+          "order_id": "ORD-002",
+          "customer": "Globex Inc",
+          "total": 45,
+          "status": "completed"
+        }
+      },
+      {
+        "json": {
+          "order_id": "ORD-003",
+          "customer": "Initech",
+          "total": 180,
+          "status": "pending"
+        }
+      },
+      {
+        "json": {
+          "order_id": "ORD-004",
+          "customer": "Umbrella Ltd",
+          "total": 320,
+          "status": "completed"
+        }
+      },
+      {
+        "json": {
+          "order_id": "ORD-005",
+          "customer": "Stark Industries",
+          "total": 75,
+          "status": "cancelled"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "TriggerManual": {
+      "main": [
+        [
+          {
+            "node": "GetOrders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetOrders": {
+      "main": [
+        [
+          {
+            "node": "CheckHighValueCompleted",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CheckHighValueCompleted": {
+      "main": [
+        [
+          {
+            "node": "SendPriorityAlert",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "LogStandardOrder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "25ee64b8-4f6b-4a07-a6cf-6a55548a8df0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c4a1ebf107c4c89d0f7573658c26d2ca73be88914904a8a05ae8ae24a53c0e29"
+  },
+  "nodeGroups": [],
+  "id": "jc7AK0aWl7Czd3ZD",
+  "tags": []
+}

@@ -1,0 +1,163 @@
+{
+  "name": "Blog post to LinkedIn",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "19ba6ef4-63ab-4e9a-a18a-978b29c96a34",
+      "name": "Blog Post Content",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -304,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "blog_post",
+              "name": "blog_post",
+              "value": "n8n Foundations is here\n\nWe just launched n8n Foundations, our new free learning program designed to get you up and running with n8n as quickly as possible. Whether you are brand new to automation or you have been dabbling for a while, Foundations gives you a structured path to build real workflows with confidence.\n\nThe program covers the core concepts you need to know -- how n8n works, how to connect your tools, how to handle data, and how to build automations that actually hold up in production. It is practical by design. Every lesson is built around things you will actually do, not just theory.\n\nWe built Foundations because we kept hearing the same thing from the community: getting started is the hardest part. So we built something that removes that barrier and gets you building faster.\n\nYou can start for free today at learn.n8n.io.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ade0127b-3a9b-4a78-a5a5-ef6994f41be0",
+      "name": "Set Blog Post",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -80,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a social media writer. Take the following blog post and rewrite it as a LinkedIn post. Keep it under 200 words. Write in a conversational, first-person tone. Do not use hashtags unless they add real value. Avoid filler phrases like excited to share or thrilled to announce.\n\nBlog post:\n{{ $json.blog_post }}",
+        "batching": {}
+      },
+      "id": "88a17181-2893-4d07-ac48-e7fd82827dde",
+      "name": "Generate LinkedIn Post",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        144,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "claude-sonnet-4-6",
+          "mode": "list",
+          "cachedResultName": "Claude Sonnet 4.6"
+        },
+        "options": {}
+      },
+      "id": "c76d9440-8ce7-4f0a-a3e2-480fdaddb4fc",
+      "name": "Anthropic Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        144,
+        112
+      ],
+      "credentials": {
+        "anthropicApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "person": "6emrbJ5pMr",
+        "text": "={{ $json.text }}",
+        "additionalFields": {
+          "visibility": "PUBLIC"
+        }
+      },
+      "id": "833f8349-1a24-4b2d-8a7d-66d414934cdb",
+      "name": "Create a post",
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [
+        496,
+        -80
+      ],
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "gBHWbflmfPV26Xoq",
+          "name": "LinkedIn account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Blog Post Content": {
+      "main": [
+        [
+          {
+            "node": "Set Blog Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Blog Post": {
+      "main": [
+        [
+          {
+            "node": "Generate LinkedIn Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate LinkedIn Post": {
+      "main": [
+        [
+          {
+            "node": "Create a post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate LinkedIn Post",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5938b466-4506-4bc7-a64a-2e99278cbc2a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c4a1ebf107c4c89d0f7573658c26d2ca73be88914904a8a05ae8ae24a53c0e29"
+  },
+  "nodeGroups": [],
+  "id": "bLotg6Vx00lDoz5l",
+  "tags": []
+}
