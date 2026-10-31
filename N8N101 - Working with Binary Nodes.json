@@ -1,0 +1,111 @@
+{
+  "name": "N8N101 - Working with Binary Nodes",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4c277b51-9a4c-42b5-89bd-50cdaed6d241",
+      "name": "When clicking Execute workflow"
+    },
+    {
+      "parameters": {
+        "url": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "5a82c674-3298-4b3e-aef7-a598c6db3b93",
+      "name": "Fetch PDF"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        0
+      ],
+      "id": "cf519483-0f99-466e-a378-2157c97ec09f",
+      "name": "Extract Text from PDF"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        672,
+        0
+      ],
+      "id": "ad04a2bc-aac2-40b1-a72d-aeaffe4d1b9c",
+      "name": "Convert to CSV"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking Execute workflow": {
+      "main": [
+        [
+          {
+            "node": "Fetch PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch PDF": {
+      "main": [
+        [
+          {
+            "node": "Extract Text from PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Text from PDF": {
+      "main": [
+        [
+          {
+            "node": "Convert to CSV",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "17d7d8c4-586e-4acc-abfa-a3e76f8831f0",
+  "meta": {
+    "instanceId": "c4a1ebf107c4c89d0f7573658c26d2ca73be88914904a8a05ae8ae24a53c0e29"
+  },
+  "nodeGroups": [],
+  "id": "FRNqSi05Q2ovUGdV",
+  "tags": []
+}
